@@ -1,4 +1,4 @@
-package org.example.magicdeckbuilder;
+package org.example.magicdeckbuilder.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
