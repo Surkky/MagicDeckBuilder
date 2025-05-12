@@ -5,4 +5,6 @@ module org.example.magicdeckbuilder {
 
     opens org.example.magicdeckbuilder to javafx.fxml;
     exports org.example.magicdeckbuilder;
+    exports org.example.magicdeckbuilder.controller;
+    opens org.example.magicdeckbuilder.controller to javafx.fxml;
 }

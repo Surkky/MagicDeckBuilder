@@ -15,19 +15,18 @@
     </properties>
 
    <dependencies>
-       <dependency> <!-- Comentar esto cuando trabajes en windows-->
-           <groupId>org.openjfx</groupId>
-           <artifactId>javafx-controls</artifactId>
-           <version>20.0.2</version>
-           <classifier>mac-aarch64</classifier>  <!-- Clave para ARM -->
-       </dependency>
-       <!--
+<!--       <dependency> &lt;!&ndash; Comentar esto cuando trabajes en windows&ndash;&gt;-->
+<!--           <groupId>org.openjfx</groupId>-->
+<!--           <artifactId>javafx-controls</artifactId>-->
+<!--           <version>20.0.2</version>-->
+<!--           <classifier>mac-aarch64</classifier>  &lt;!&ndash; Clave para ARM &ndash;&gt;-->
+<!--       </dependency>-->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>20.0.1</version>
         </dependency>
-        -->
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
@@ -68,8 +67,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.magicdeckbuilder/org.example.magicdeckbuilder.HelloApplication
-                            </mainClass>
+                            <mainClass>org.example.magicdeckbuilder/org.example.magicdeckbuilder.MainApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
