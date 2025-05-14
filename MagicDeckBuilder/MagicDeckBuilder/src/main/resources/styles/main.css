@@ -1,0 +1,22 @@
+.button {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-font-size: 14px;
+    -fx-font-family: "Georgia";
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, black, 2, 0, 0, 1);
+}
+
+/* Hover: estilo dorado + cambio de texto  */
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #ffd700, #e6c200);
+    -fx-text-fill: black;
+    -fx-border-color: #e6c200;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, gold, 10, 0.6, 0, 2);
+    -fx-font-size: 16px;
+    -fx-font-family: "Georgia";
+}

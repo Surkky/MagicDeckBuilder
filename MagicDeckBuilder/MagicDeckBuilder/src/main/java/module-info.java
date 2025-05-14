@@ -7,4 +7,6 @@ module org.example.magicdeckbuilder {
     exports org.example.magicdeckbuilder;
     exports org.example.magicdeckbuilder.controller;
     opens org.example.magicdeckbuilder.controller to javafx.fxml;
+    opens org.example.magicdeckbuilder.model to javafx.fxml;
+
 }
