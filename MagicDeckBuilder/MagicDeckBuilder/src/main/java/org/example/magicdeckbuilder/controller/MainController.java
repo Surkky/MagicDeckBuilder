@@ -1,10 +1,18 @@
-package org.example.magicdeckbuilder.model;
+package org.example.magicdeckbuilder.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class MainController {
 
@@ -42,5 +50,16 @@ public class MainController {
 
         logOutButton.setOnMouseEntered(e -> logOutButton.setText("SELECT"));
         logOutButton.setOnMouseExited(e -> logOutButton.setText("Log Out"));
+    }
+
+    @FXML
+    private void onCreateDeckClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/create_deck.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/styles/create_deck.css").toExternalForm());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 }

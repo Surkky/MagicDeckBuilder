@@ -1,6 +1,8 @@
 module org.example.magicdeckbuilder {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.net.http;
+    requires org.json;
 
 
     opens org.example.magicdeckbuilder to javafx.fxml;
