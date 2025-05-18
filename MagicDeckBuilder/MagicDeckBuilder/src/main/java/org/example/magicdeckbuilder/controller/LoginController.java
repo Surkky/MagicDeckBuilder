@@ -14,6 +14,8 @@ public class LoginController {
     private Button loginButton;
     @FXML
     private Button closeButton;
+    @FXML
+    private Button registerButton;
 
     @FXML
     private void login(){
