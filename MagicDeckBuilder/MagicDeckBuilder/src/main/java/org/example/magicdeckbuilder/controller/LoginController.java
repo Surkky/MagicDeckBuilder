@@ -15,6 +15,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 
 
 public class LoginController {
@@ -38,7 +44,6 @@ public class LoginController {
     private Label errorLabel;
 
 
-
     public void initialize() {
         // Cargar imagen de fondo desde resources/images/fondo.jpg
         Image image = new Image(getClass().getResource("/images/fondo.jpg").toExternalForm());
@@ -46,15 +51,16 @@ public class LoginController {
         // Ajusta el tamaño de la imagen del fondo al tamaño de la ventana(rootPane)
         backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
         backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
-         //Ajusta el tamaño del login al tamaño de la ventana(rootPane)
+        //Ajusta el tamaño del login al tamaño de la ventana(rootPane)
         loginBox.prefWidthProperty().bind(rootPane.widthProperty().multiply(0.3)); // 30% del ancho
         loginBox.prefHeightProperty().bind(rootPane.heightProperty().multiply(0.4)); // 40% del alto
         // Centrar VBox desde código
         loginBox.setAlignment(Pos.CENTER);
         loginBox.setSpacing(15);
     }
+
     @FXML
-    private void login(){
+    private void login() {
         String username = userField.getText();
         String password = passwordField.getText();
 
@@ -63,14 +69,36 @@ public class LoginController {
             return;
         }
 
-        // Cambiar mas adelante
-        if (username.equals("admin") && password.equals("1234")) {
-            errorLabel.setText("");
-            loadNextScene(); // Ir a la siguiente pantalla
-        } else {
+        File userFile = new File("data/users.json");
+
+        if (!userFile.exists()) {
+            errorLabel.setText("No users registered yet.");
+            return;
+        }
+
+        try {
+            String content = Files.readString(userFile.toPath());
+            JSONArray users = new JSONArray(content);
+
+            for (int i = 0; i < users.length(); i++) {
+                JSONObject user = users.getJSONObject(i);
+                if (user.getString("name").equals(username) &&
+                        user.getString("password").equals(password)) {
+
+                    errorLabel.setText(""); // limpiar errores
+                    loadNextScene(); // usuario válido → continuar
+                    return;
+                }
+            }
+
             errorLabel.setText("Invalid username or password");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorLabel.setText("Error reading user file");
         }
     }
+
     private void loadNextScene() { //Cargar la siguiente pantalla
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/main.fxml"));
