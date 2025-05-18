@@ -99,12 +99,12 @@ public class LoginController {
         }
     }
 
-    private void loadNextScene() { //Cargar la siguiente pantalla
+    private void loadNextScene() { //carga siguiente escena
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/main.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root, 1152, 768); //tamaño fijo de todas las ventanas
             scene.getStylesheets().add(getClass().getResource("/styles/main.css").toExternalForm());
             stage.setScene(scene);
             stage.show();
@@ -112,17 +112,18 @@ public class LoginController {
             e.printStackTrace();
             errorLabel.setText("Could not load main screen");
         }
-
     }
+
     @FXML
     private void goToRegister() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/register.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) registerButton.getScene().getWindow();
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root, 1152, 768); // Tamaño fijo
             scene.getStylesheets().add(getClass().getResource("/styles/login.css").toExternalForm());
             stage.setScene(scene);
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             errorLabel.setText("Could not load register screen");

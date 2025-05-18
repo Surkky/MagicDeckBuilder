@@ -6,24 +6,34 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.*;
 import java.nio.file.Files;
+import javafx.fxml.FXML;
+import javafx.scene.layout.StackPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+
 
 public class RegisterController {
-
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
     @FXML private Label errorLabel;
+    @FXML private StackPane rootPane;
+    @FXML private ImageView backgroundImage;
+
 
     private final File userFile = new File("data/users.json");
 
     @FXML
     public void initialize() {
+        Image image = new Image(getClass().getResource("/images/fondo_register.jpg").toExternalForm());
+        backgroundImage.setImage(image);
+        backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
+        backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
+
         try {
             if (!userFile.exists()) {
                 userFile.getParentFile().mkdirs();

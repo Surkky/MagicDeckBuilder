@@ -11,9 +11,9 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1152, 768);
         scene.getStylesheets().add(MainApplication.class.getResource("/styles/login.css").toExternalForm());
-
         stage.setTitle("Magic Deck Builder");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
