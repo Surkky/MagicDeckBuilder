@@ -6,14 +6,14 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import java.io.*;
-import java.nio.file.Files;
-import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 
 
 public class RegisterController {
@@ -24,70 +24,68 @@ public class RegisterController {
     @FXML private StackPane rootPane;
     @FXML private ImageView backgroundImage;
 
-
-    private final File userFile = new File("data/users.json");
-
     @FXML
     public void initialize() {
         Image image = new Image(getClass().getResource("/images/fondo_register.jpg").toExternalForm());
         backgroundImage.setImage(image);
         backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
         backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
-
-        try {
-            if (!userFile.exists()) {
-                userFile.getParentFile().mkdirs();
-                userFile.createNewFile();
-                Files.writeString(userFile.toPath(), "[]"); // JSON array vacío
-            }
-        } catch (IOException e) {
-            errorLabel.setText("Error setting up user file.");
-            e.printStackTrace();
-        }
     }
 
     @FXML
     private void registerUser() {
         String username = usernameField.getText().trim();
-        String password = passwordField.getText();
-        String confirm = confirmPasswordField.getText();
+        String password = passwordField.getText().trim();
+        String confirmPassword = confirmPasswordField.getText().trim();
+        boolean datosValidos = true;
+        errorLabel.setText("");
 
-        if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
-            errorLabel.setText("All fields are required.");
-            return;
+        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            errorLabel.setText("All fields are required");
+            datosValidos = false;
+        } else if (!password.equals(confirmPassword)) {
+            errorLabel.setText("Passwords do not match");
+            datosValidos = false;
         }
 
-        if (!password.equals(confirm)) {
-            errorLabel.setText("Passwords do not match.");
-            return;
-        }
+        if (datosValidos) {
+            File file = new File("data/usuarios.txt");
+            file.getParentFile().mkdirs();
 
-        try {
-            String content = Files.readString(userFile.toPath());
-            JSONArray users = new JSONArray(content);
+            boolean usuarioExiste = false;
 
-            for (int i = 0; i < users.length(); i++) {
-                JSONObject user = users.getJSONObject(i);
-                if (user.getString("name").equalsIgnoreCase(username)) {
-                    errorLabel.setText("Username already exists.");
-                    return;
+            try {
+                if (file.exists()) {
+                    List<String> lines = Files.readAllLines(file.toPath());
+                    for (String line : lines) {
+                        String[] parts = line.split(":");
+                        if (parts.length > 0 && parts[0].equals(username)) {
+                            errorLabel.setText("User already exists");
+                            usuarioExiste = true;
+                            break;
+                        }
+                    }
                 }
+
+                if (!usuarioExiste) {
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                        writer.write(username + ":" + password);
+                        writer.newLine();
+                    }
+
+                    errorLabel.setText("User registered successfully!");
+                    usernameField.clear();
+                    passwordField.clear();
+                    confirmPasswordField.clear();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                errorLabel.setText("Error saving user");
             }
-
-            JSONObject newUser = new JSONObject();
-            newUser.put("name", username);
-            newUser.put("password", password); // ⚠️ sin encriptar por ahora
-
-            users.put(newUser);
-            Files.writeString(userFile.toPath(), users.toString(4));
-
-            errorLabel.setText("User registered successfully!");
-
-        } catch (IOException e) {
-            errorLabel.setText("Error saving user.");
-            e.printStackTrace();
         }
     }
+
 
     @FXML
     private void goBack() {
@@ -104,3 +102,4 @@ public class RegisterController {
         }
     }
 }
+

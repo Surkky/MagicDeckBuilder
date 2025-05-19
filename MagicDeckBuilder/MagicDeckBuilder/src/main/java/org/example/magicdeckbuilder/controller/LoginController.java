@@ -15,10 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 
 
@@ -66,36 +64,29 @@ public class LoginController {
 
         if (username.isEmpty() || password.isEmpty()) {
             errorLabel.setText("Both fields are required");
-            return;
         }
 
-        File userFile = new File("data/users.json");
+        File file = new File("data/usuarios.txt");
 
-        if (!userFile.exists()) {
-            errorLabel.setText("No users registered yet.");
+        if (!file.exists()) {
+            errorLabel.setText("User database not found");
             return;
         }
 
         try {
-            String content = Files.readString(userFile.toPath());
-            JSONArray users = new JSONArray(content);
-
-            for (int i = 0; i < users.length(); i++) {
-                JSONObject user = users.getJSONObject(i);
-                if (user.getString("name").equals(username) &&
-                        user.getString("password").equals(password)) {
-
-                    errorLabel.setText(""); // limpiar errores
-                    loadNextScene(); // usuario válido → continuar
+            List<String> lines = Files.readAllLines(file.toPath());
+            for (String line : lines) {
+                String[] parts = line.split(":");
+                if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
+                    errorLabel.setText("");
+                    loadNextScene(); //acceso permitido
                     return;
                 }
             }
-
             errorLabel.setText("Invalid username or password");
-
         } catch (IOException e) {
             e.printStackTrace();
-            errorLabel.setText("Error reading user file");
+            errorLabel.setText("Error reading user data");
         }
     }
 
@@ -130,11 +121,8 @@ public class LoginController {
         }
     }
 
-
     @FXML
     private void close(){
         System.exit(0);
     }
-
-
 }
