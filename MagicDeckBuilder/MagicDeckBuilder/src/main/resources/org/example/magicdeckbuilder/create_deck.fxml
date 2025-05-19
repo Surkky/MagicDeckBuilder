@@ -8,22 +8,38 @@
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="org.example.magicdeckbuilder.controller.CreateDeckController"
            prefWidth="1152" prefHeight="768">
-    <!-- fondo -->
+
+    <!-- Fondo -->
     <ImageView fx:id="backgroundImage"
                fitWidth="1152" fitHeight="768"
                preserveRatio="false" />
 
-    <!-- Lista de cartas en el centro -->
-    <VBox fx:id="cardContainer"
+    <!-- Filtros arriba -->
+    <HBox spacing="12"
           alignment="CENTER"
-          spacing="20"
-          maxWidth="900" maxHeight="600"
-          style="-fx-background-color: rgba(0,0,0,0.6); -fx-background-radius: 10;">
-    </VBox>
+          StackPane.alignment="TOP_CENTER"
+          style="-fx-background-color: rgba(0,0,0,0.6); -fx-padding: 10; -fx-background-radius: 10;"
+          maxWidth="1000" translateY="30">
+        <Label text="Filters:" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+        <ComboBox promptText="Type" prefWidth="140" />
+        <ComboBox promptText="Mana Cost" prefWidth="140" />
+        <ComboBox promptText="Rarity" prefWidth="140" />
+        <Button text="Apply" />
+        <Button text="Clear" />
+    </HBox>
+
+    <!-- Botón volver arriba izquierda -->
     <Button fx:id="backButton"
             text="← Back"
             onAction="#goBack"
             StackPane.alignment="TOP_LEFT"
             style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10;" />
+
+    <!-- Contenedor de cartas -->
+    <VBox fx:id="cardContainer"
+          alignment="CENTER"
+          spacing="20"
+          maxWidth="900" maxHeight="600"
+          style="-fx-background-color: rgba(0,0,0,0.6); -fx-background-radius: 10;" />
 
 </StackPane>
