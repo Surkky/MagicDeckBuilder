@@ -56,12 +56,13 @@ public class MainController {
     private void onCreateDeckClick(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/create_deck.fxml"));
         Parent root = loader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 1152, 768);
         scene.getStylesheets().add(getClass().getResource("/styles/create_deck.css").toExternalForm());
+
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
-        stage.show();
     }
+
 
     @FXML
     public void onLogOutClick(ActionEvent event) throws IOException {
