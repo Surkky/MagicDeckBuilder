@@ -37,56 +37,68 @@ public class RegisterController {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
         String confirmPassword = confirmPasswordField.getText().trim();
-        boolean datosValidos = true;
         errorLabel.setText("");
 
-        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        boolean fieldsFilled = !username.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty();
+        boolean passwordsMatch = password.equals(confirmPassword);
+        boolean userExists = false;
+        boolean userSaved = false;
+
+        // Verificar que todos los campos estén completos
+        if (!fieldsFilled) {
             errorLabel.setText("All fields are required");
-            datosValidos = false;
-        } else if (!password.equals(confirmPassword)) {
-            errorLabel.setText("Passwords do not match");
-            datosValidos = false;
         }
 
-        if (datosValidos) {
+        // Verificar que las contraseñas coincidan
+        if (fieldsFilled && !passwordsMatch) {
+            errorLabel.setText("Passwords do not match");
+        }
+
+        // Intentar guardar el usuario si todo es válido
+        if (fieldsFilled && passwordsMatch) {
             File file = new File("data/usuarios.txt");
             file.getParentFile().mkdirs();
-
-            boolean usuarioExiste = false;
 
             try {
                 if (file.exists()) {
                     List<String> lines = Files.readAllLines(file.toPath());
+
                     for (String line : lines) {
                         String[] parts = line.split(":");
                         if (parts.length > 0 && parts[0].equals(username)) {
-                            errorLabel.setText("User already exists");
-                            usuarioExiste = true;
-                            break;
+                            userExists = true;
                         }
                     }
                 }
 
-                if (!usuarioExiste) {
+                if (!userExists) {
                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
                         writer.write(username + ":" + password);
                         writer.newLine();
+                        userSaved = true;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        errorLabel.setText("Error saving user");
                     }
-
-                    errorLabel.setText("User registered successfully!");
-                    usernameField.clear();
-                    passwordField.clear();
-                    confirmPasswordField.clear();
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
-                errorLabel.setText("Error saving user");
+                errorLabel.setText("Error reading file");
+            }
+
+            if (userExists) {
+                errorLabel.setText("User already exists");
+            }
+
+            if (userSaved) {
+                errorLabel.setText("User registered successfully!");
+                usernameField.clear();
+                passwordField.clear();
+                confirmPasswordField.clear();
             }
         }
     }
-
-
     @FXML
     private void goBack() {
         try {

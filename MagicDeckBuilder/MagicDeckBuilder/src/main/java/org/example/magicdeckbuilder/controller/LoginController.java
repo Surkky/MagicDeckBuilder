@@ -59,37 +59,50 @@ public class LoginController {
 
     @FXML
     private void login() {
-        String username = userField.getText();
-        String password = passwordField.getText();
+        String username = userField.getText().trim();
+        String password = passwordField.getText().trim();
+        errorLabel.setText("");
 
-        if (username.isEmpty() || password.isEmpty()) {
+        boolean fieldsFilled = !username.isEmpty() && !password.isEmpty();
+        boolean fileExists = new File("data/usuarios.txt").exists();
+        boolean loginSuccess = false;
+
+        // Verificar que los campos no estén vacíos
+        if (!fieldsFilled) {
             errorLabel.setText("Both fields are required");
         }
 
-        File file = new File("data/usuarios.txt");
-
-        if (!file.exists()) {
+        // Verificar si el archivo existe
+        if (fieldsFilled && !fileExists) {
             errorLabel.setText("User database not found");
-            return;
         }
 
-        try {
-            List<String> lines = Files.readAllLines(file.toPath());
-            for (String line : lines) {
-                String[] parts = line.split(":");
-                if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
-                    errorLabel.setText("");
-                    loadNextScene(); //acceso permitido
-                    return;
+        // Intentar iniciar sesión si los datos están completos y el archivo existe
+        if (fieldsFilled && fileExists) {
+            File file = new File("data/usuarios.txt");
+
+            try {
+                List<String> lines = Files.readAllLines(file.toPath());
+
+                for (String line : lines) {
+                    String[] parts = line.split(":");
+                    if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
+                        loginSuccess = true;
+                    }
                 }
+
+                if (loginSuccess) {
+                    loadNextScene();
+                } else {
+                    errorLabel.setText("Invalid username or password");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                errorLabel.setText("Error reading user data");
             }
-            errorLabel.setText("Invalid username or password");
-        } catch (IOException e) {
-            e.printStackTrace();
-            errorLabel.setText("Error reading user data");
         }
     }
-
     private void loadNextScene() { //carga siguiente escena
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/main.fxml"));
