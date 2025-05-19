@@ -1,4 +1,10 @@
-[{
-    "password": "1234",
-    "name": "mari"
-}]
+[
+    {
+        "password": "1234",
+        "name": "mari"
+    },
+    {
+        "password": "baby",
+        "name": "baby"
+    }
+]

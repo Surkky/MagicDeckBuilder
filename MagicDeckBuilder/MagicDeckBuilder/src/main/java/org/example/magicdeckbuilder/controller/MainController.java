@@ -62,4 +62,17 @@ public class MainController {
         stage.setScene(scene);
         stage.show();
     }
+
+    @FXML
+    public void onLogOutClick(ActionEvent event) throws IOException {
+        Parent loginRoot = FXMLLoader.load(getClass().getResource("/org/example/magicdeckbuilder/login.fxml"));
+        Scene loginScene = new Scene(loginRoot);
+
+        // Obtener el stage actual desde el botón (evento)
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        // Cambiar la escena
+        stage.setScene(loginScene);
+        stage.show();
+    }
 }
