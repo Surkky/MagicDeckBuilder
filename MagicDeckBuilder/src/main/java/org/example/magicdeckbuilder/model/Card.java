@@ -7,17 +7,18 @@ public class Card {
 
     private String name;
     private int manaCost;
-    private String cardType;
+    private CardType cardType;
     private List<String> subtypes;
     private String flavorText;
     private String set;
     private String rarity;
     private String artist;
+    private String imgUrl;
 
     public Card() {
     }
 
-    public Card(String name, int manaCost, String cardType, List<String> subtypes, String flavorText, String set, String rarity, String artist) {
+    public Card(String name, int manaCost, CardType cardType, List<String> subtypes, String flavorText, String set, String rarity, String artist, String imgUrl) {
         this.name = name;
         this.manaCost = manaCost;
         this.cardType = cardType;
@@ -26,6 +27,7 @@ public class Card {
         this.set = set;
         this.rarity = rarity;
         this.artist = artist;
+        this.imgUrl = imgUrl;
     }
 
     public String getArtist() {
@@ -68,11 +70,11 @@ public class Card {
         this.subtypes = subtypes;
     }
 
-    public String getCardType() {
+    public CardType getCardType() {
         return cardType;
     }
 
-    public void setCardType(String cardType) {
+    public void setCardType(CardType cardType) {
         this.cardType = cardType;
     }
 
@@ -92,17 +94,26 @@ public class Card {
         this.name = name;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     @Override
     public String toString() {
         return "Card{" +
                 "name='" + name + '\'' +
                 ", manaCost=" + manaCost +
-                ", cardType='" + cardType + '\'' +
+                ", cardType=" + cardType +
                 ", subtypes=" + subtypes +
                 ", flavorText='" + flavorText + '\'' +
                 ", set='" + set + '\'' +
                 ", rarity='" + rarity + '\'' +
                 ", artist='" + artist + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
                 '}';
     }
 }

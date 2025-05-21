@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.example.magicdeckbuilder.controller.CreateDeckController"
+           prefWidth="1152" prefHeight="768">
+
+    <!-- 1) Fondo en el back -->
+    <ImageView fx:id="backgroundImage"
+               fitWidth="1152" fitHeight="768"
+               preserveRatio="false" />
+
+    <!-- 2) Contenedor vertical: filtros arriba, cartas abajo -->
+    <VBox spacing="20" alignment="TOP_CENTER">
+        <!-- fila de filtros -->
+        <HBox fx:id="filterBox"
+              prefWidth="600" maxWidth="600"
+              spacing="12" alignment="CENTER"
+              style="-fx-background-color: rgba(0,0,0,0.6);
+                     -fx-padding: 8;
+                     -fx-background-radius: 10;"
+              translateY="20">
+            <Label text="Filters:"
+                   style="-fx-text-fill: white; -fx-font-weight: bold;" />
+            <ComboBox promptText="Type"      prefWidth="120" />
+            <ComboBox promptText="Mana Cost" prefWidth="120" />
+            <ComboBox promptText="Rarity"    prefWidth="120" />
+            <Button   text="Apply"  />
+            <Button   text="Clear"  />
+        </HBox>
+
+        <!-- scroll de cartas, justo bajo el HBox -->
+        <ScrollPane fitToWidth="true" fitToHeight="true"
+                    style="-fx-background: transparent; -fx-padding: 10;">
+            <content>
+                <TilePane fx:id="cardContainer"
+                          hgap="10" vgap="10"
+                          prefColumns="6"
+                          style="-fx-background-color: rgba(0,0,0,0.4);
+                                 -fx-background-radius: 8;
+                                 -fx-padding: 10;" />
+            </content>
+        </ScrollPane>
+    </VBox>
+
+    <!-- 3) Botón volver, siempre encima -->
+    <Button fx:id="backButton"
+            text="← Back"
+            onAction="#goBack"
+            StackPane.alignment="TOP_LEFT"
+            style="-fx-background-color: transparent;
+                   -fx-text-fill: white;
+                   -fx-font-size: 14px;
+                   -fx-padding: 10;" />
+    <ProgressIndicator fx:id="loadingIndicator"
+                       StackPane.alignment="CENTER"
+                       visible="false"
+                       prefWidth="100" prefHeight="100"/>
+
+</StackPane>
+
