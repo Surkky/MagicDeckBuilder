@@ -1,0 +1,5 @@
+A-Moon-Circuit Hacker|2|CREATURE|Human,Ninja| |neo|common|Tia Masic|https://cards.scryfall.io/normal/front/3/8/38f66d0c-5d03-449f-a056-b97e2ed6a3a1.jpg?1681159092|1
+Ambitious Assault|3|INSTANT||In the clangor and chaos of the akki attack, few even noticed the frogs on their heads.|neo|common|Wayne Reynolds|https://cards.scryfall.io/normal/front/d/0/d00d618d-abad-475b-b938-e111282ea1c3.jpg?1654567513|1
+Acquisition Octopus|3|CREATURE|Equipment,Octopus|You can never have too many arms.|neo|uncommon|Francisco Miyara|https://cards.scryfall.io/normal/front/8/e/8e971a72-31db-4b7e-b9b9-9f45e8c3f87e.jpg?1654566583|1
+A-Circuit Mender|3|CREATURE|Insect| |neo|uncommon|Hector Ortiz|https://cards.scryfall.io/normal/front/6/a/6a93c43b-0604-47fa-ae4e-4f72d342acf9.jpg?1681158524|1
+Akki War Paint|1|ENCHANTMENT|Aura|Akki paint bright, bold designs on their salvaged Imperial mechs, leaving no doubt as to who they belong to now.|neo|common|Jeremy Wilson|https://cards.scryfall.io/normal/front/f/1/f110698e-a343-4eff-ba23-ed7ac5a3f87b.jpg?1654567513|1
