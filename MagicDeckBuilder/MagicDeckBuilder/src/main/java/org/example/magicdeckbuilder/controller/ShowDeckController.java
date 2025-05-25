@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class ShowDeckController {
@@ -28,38 +29,46 @@ public class ShowDeckController {
     public void setCurrentUsername(String username) {
         this.currentUsername = username;
         loadUserDecks();
-    }
 
-    private void loadUserDecks() {
-        File folder = new File("decks");
-        if (!folder.exists()) folder.mkdir();
+        selectButton.setOnAction(event -> showDeck(deckComboBox.getValue()));
+        backButton.setOnAction(event -> goBack(event));
 
-        File[] files = folder.listFiles((dir, name) ->
-                name.startsWith(currentUsername + "_") && name.endsWith(".txt"));
-
-        if (files != null) {
-            for (File file : files) {
-                String deckName = file.getName()
-                        .replace(currentUsername + "_", "")
-                        .replace(".txt", "");
-                deckComboBox.getItems().add(deckName);
-            }
-        }
+        System.out.println("Usuario actual en ShowDeckController: " + currentUsername);
     }
 
     @FXML
     private void initialize() {
         Image bg = new Image(getClass().getResource("/images/createDeck_background.jpg").toExternalForm());
         backgroundImage.setImage(bg);
-
-        selectButton.setOnAction(event -> showDeck(deckComboBox.getValue()));
-        backButton.setOnAction(event -> goBack(event));
     }
+
+    private void loadUserDecks() {
+
+        File folder = Paths.get("data", "users", currentUsername, "decks").toFile();
+        if (!folder.exists()) folder.mkdir();
+
+        File[] files = folder.listFiles((dir, name) ->
+                name.endsWith(".txt"));
+
+        if (files != null) {
+            for (File file : files) {
+                String deckName = file.getName().replace(".txt", "");
+                deckComboBox.getItems().add(deckName);
+            }
+        }
+        System.out.println("Buscando mazos en: " + folder.getAbsolutePath());
+        System.out.println("Archivos encontrados:");
+        for (File file : files) {
+            System.out.println(" -> " + file.getName());
+        }
+    }
+
+
 
     private void showDeck(String deckName) {
         cardContainer.getChildren().clear();
 
-        File file = new File("decks/" + currentUsername + "_" + deckName + ".txt");
+        File file = Paths.get("data", "users", currentUsername, "decks", deckName + ".txt").toFile();
         if (!file.exists()) return;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
