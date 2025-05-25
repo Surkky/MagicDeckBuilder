@@ -18,15 +18,42 @@
 
         <HBox alignment="CENTER" spacing="10"
               style="-fx-background-color: rgba(0,0,0,0.6); -fx-padding: 10; -fx-background-radius: 10;">
+
             <Button fx:id="backButton"
                     text="← Back"
-                    style="-fx-background-color: transparent; -fx-text-fill: white;" />
+                    style="-fx-background-color: transparent;
+                   -fx-text-fill: white;
+                   -fx-font-size: 14px;
+                   -fx-padding: 5 15;
+                   -fx-border-color: gold;
+                   -fx-border-width: 2;
+                   -fx-border-radius: 10;" />
+
             <Label text="Select a deck:"
                    style="-fx-text-fill: white; -fx-font-size: 14px;" />
-            <ComboBox fx:id="deckComboBox" prefWidth="200" />
-            <Button fx:id="selectButton" text="Select" />
-        </HBox>
 
+            <ComboBox fx:id="deckComboBox" prefWidth="200" />
+
+            <Button fx:id="selectButton"
+                    text="Select"
+                    style="-fx-background-color: transparent;
+                   -fx-text-fill: white;
+                   -fx-font-size: 14px;
+                   -fx-padding: 5 15;
+                   -fx-border-color: gold;
+                   -fx-border-width: 2;
+                   -fx-border-radius: 10;" />
+
+            <Button fx:id="deleteButton"
+                    text="Delete"
+                    style="-fx-background-color: transparent;
+                   -fx-text-fill: white;
+                   -fx-font-size: 14px;
+                   -fx-padding: 5 15;
+                   -fx-border-color: gold;
+                   -fx-border-width: 2;
+                   -fx-border-radius: 10;" />
+        </HBox>
         <ScrollPane fitToWidth="true" style="-fx-padding: 10;">
             <content>
                 <TilePane fx:id="cardContainer"
