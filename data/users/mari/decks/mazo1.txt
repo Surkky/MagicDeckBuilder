@@ -1,0 +1,3 @@
+Akki War Paint|1|ENCHANTMENT|Aura|Akki paint bright, bold designs on their salvaged Imperial mechs, leaving no doubt as to who they belong to now.|neo|common|Jeremy Wilson|https://cards.scryfall.io/normal/front/f/1/f110698e-a343-4eff-ba23-ed7ac5a3f87b.jpg?1654567513|1
+Acquisition Octopus|3|CREATURE|Equipment,Octopus|You can never have too many arms.|neo|uncommon|Francisco Miyara|https://cards.scryfall.io/normal/front/8/e/8e971a72-31db-4b7e-b9b9-9f45e8c3f87e.jpg?1654566583|1
+Asari Captain|5|CREATURE|Human,Samurai|"Go! Show them your fury!"|neo|uncommon|Donato Giancola|https://cards.scryfall.io/normal/front/8/3/834b4e6a-1812-4399-8fe4-bb1686ba49ef.jpg?1654568396|1

@@ -11,10 +11,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.example.magicdeckbuilder.model.User;
+import org.example.magicdeckbuilder.model.SessionManager;
+
+
 
 import java.io.IOException;
 
 public class MainController {
+
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @FXML
     private AnchorPane rootPane;
@@ -76,5 +86,20 @@ public class MainController {
         stage.setScene(loginScene);
         stage.show();
     }
+
+    @FXML
+    private void onMyDecksClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/show_deck.fxml"));
+        Parent root = loader.load();
+
+        ShowDeckController controller = loader.getController();
+        controller.setCurrentUsername(SessionManager.getCurrentUser().getName());
+
+        Scene scene = new Scene(root, 1152, 768);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+
 
 }

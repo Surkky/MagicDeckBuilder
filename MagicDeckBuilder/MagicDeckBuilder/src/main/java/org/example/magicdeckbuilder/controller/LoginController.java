@@ -105,9 +105,10 @@ public class LoginController {
     private void loadNextScene() {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/org/example/magicdeckbuilder/create_deck.fxml"));
+                    getClass().getResource("/org/example/magicdeckbuilder/main.fxml"));
             Parent root = loader.load();
-            CreateDeckController ctrl = loader.getController();
+
+            MainController ctrl = loader.getController();
             ctrl.setUser(SessionManager.getCurrentUser());
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
