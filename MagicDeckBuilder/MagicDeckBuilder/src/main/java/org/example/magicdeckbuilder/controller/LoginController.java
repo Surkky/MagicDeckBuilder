@@ -27,7 +27,7 @@ import org.example.magicdeckbuilder.model.User;
 import org.example.magicdeckbuilder.model.SessionManager;
 
 public class LoginController {
-    @FXML private TextField userField;
+    @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
     @FXML private Button registerButton;
@@ -38,7 +38,6 @@ public class LoginController {
     @FXML private Label errorLabel;
 
     public void initialize() {
-
         Image img = new Image(getClass().getResource("/images/fondo.jpg").toExternalForm());
         backgroundImage.setImage(img);
         backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
@@ -51,61 +50,52 @@ public class LoginController {
 
     @FXML
     private void login() {
-        String username = userField.getText().trim();
+        String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
         errorLabel.setText("");
 
-        if (username.isEmpty() || password.isEmpty()) {
+        boolean emptyFields = username.isEmpty() || password.isEmpty();
+        boolean fileError = false;
+        boolean loginValid = false;
+
+        if (emptyFields) {
             errorLabel.setText("Both fields are required");
-            return;
-        }
+        } else {
+            InputStream is = getClass().getResourceAsStream("/data/usuarios.txt");
 
-        InputStream is = getClass().getResourceAsStream("/data/usuarios.txt");
-        if (is == null) {
-            errorLabel.setText("User database not found");
-            return;
-        }
+            if (is == null) {
+                errorLabel.setText("User database not found");
+            } else {
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(is, StandardCharsets.UTF_8))) {
 
-        boolean loginSuccess = false;
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(is, StandardCharsets.UTF_8))) {
+                    List<String> lines = reader.lines().toList();
+                    for (String line : lines) {
+                        String[] parts = line.split(":");
+                        if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
+                            loginValid = true;
+                        }
+                    }
 
-            List<String> lines = reader.lines().toList();
-            for (String line : lines) {
-                String[] parts = line.split(":");
-                if (parts.length == 2
-                        && parts[0].equals(username)
-                        && parts[1].equals(password)) {
-                    loginSuccess = true;
-                    break;
+                    if (loginValid) {
+                        User user = new User(username, password, new ArrayList<>(), new ArrayList<>());
+                        SessionManager.setCurrentUser(user);
+                        loadNextScene();
+                    } else {
+                        errorLabel.setText("Invalid username or password");
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    errorLabel.setText("Error reading user data");
                 }
             }
-
-            if (loginSuccess) {
-                // Creamos el User con listas mutables para decks
-                User user = new User(
-                        username,
-                        password,
-                        new ArrayList<>(),    // aquí la colección de cartas si la necesitas
-                        new ArrayList<>()     // decks mutables
-                );
-                SessionManager.setCurrentUser(user);
-
-                loadNextScene();
-            } else {
-                errorLabel.setText("Invalid username or password");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            errorLabel.setText("Error reading user data");
         }
     }
 
     private void loadNextScene() {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/org/example/magicdeckbuilder/main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/main.fxml"));
             Parent root = loader.load();
 
             MainController ctrl = loader.getController();
@@ -113,8 +103,7 @@ public class LoginController {
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
             Scene scene = new Scene(root, 1152, 768);
-            scene.getStylesheets().add(
-                    getClass().getResource("/styles/main.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/main.css").toExternalForm());
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -124,7 +113,20 @@ public class LoginController {
     }
 
     @FXML
-    private void goToRegister() { /* ... */ }
+    private void goToRegister() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/register.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            Scene scene = new Scene(root, 1152, 768);
+            scene.getStylesheets().add(getClass().getResource("/styles/login.css").toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorLabel.setText("Could not open registration screen");
+        }
+    }
 
     @FXML
     private void close() {

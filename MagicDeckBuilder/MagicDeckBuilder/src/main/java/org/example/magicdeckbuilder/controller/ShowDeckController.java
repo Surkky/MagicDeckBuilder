@@ -107,18 +107,23 @@ public class ShowDeckController {
         }
     }
     private void deleteDeck(String deckName) {
-        if (deckName == null) return;
+        boolean validName = deckName != null;
 
-        File file = Paths.get("data", "users", currentUsername, "decks", deckName + ".txt").toFile();
-        if (file.exists() && file.delete()) {
-            deckComboBox.getItems().remove(deckName);
-            deckComboBox.getSelectionModel().clearSelection();
-            cardContainer.getChildren().clear();
-            System.out.println("Mazo eliminado: " + deckName);
-        } else {
-            System.out.println("No se pudo eliminar el mazo: " + deckName);
+        if (validName) {
+            File file = Paths.get("data", "users", currentUsername, "decks", deckName + ".txt").toFile();
+            boolean deleted = file.exists() && file.delete();
+
+            if (deleted) {
+                deckComboBox.getItems().remove(deckName);
+                deckComboBox.getSelectionModel().clearSelection();
+                cardContainer.getChildren().clear();
+                System.out.println("Mazo eliminado: " + deckName);
+            } else {
+                System.out.println("No se pudo eliminar el mazo: " + deckName);
+            }
         }
     }
+
     private void editDeck(String deckName) {
         if (deckName != null) {
             try {

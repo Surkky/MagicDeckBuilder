@@ -13,7 +13,6 @@ import javafx.scene.image.Image;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.BufferedReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.List;
@@ -32,8 +31,7 @@ public class RegisterController {
     @FXML
     public void initialize() {
         // Cargo el fondo
-        Image img = new Image(getClass().getResource("/images/fondo_register.jpg")
-                .toExternalForm());
+        Image img = new Image(getClass().getResource("/images/fondo_register.jpg").toExternalForm());
         backgroundImage.setImage(img);
         backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
         backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
@@ -63,63 +61,63 @@ public class RegisterController {
         String conf = confirmPasswordField.getText().trim();
         errorLabel.setText("");
 
+        boolean valid = true;
+
         if (user.isEmpty() || pass.isEmpty() || conf.isEmpty()) {
             errorLabel.setText("All fields are required");
-            return;
-        }
-        if (!pass.equals(conf)) {
+            valid = false;
+        } else if (!pass.equals(conf)) {
             errorLabel.setText("Passwords do not match");
-            return;
+            valid = false;
         }
 
-        // Compruebo si ya existe
         boolean exists = false;
-        try {
-            List<String> lines = Files.readAllLines(EXTERNAL_USERS, StandardCharsets.UTF_8);
-            for (String line : lines) {
-                String[] p = line.split(":");
-                if (p.length > 0 && p[0].equals(user)) {
-                    exists = true;
-                    break;
+        if (valid) {
+            try {
+                List<String> lines = Files.readAllLines(EXTERNAL_USERS, StandardCharsets.UTF_8);
+                for (String line : lines) {
+                    String[] p = line.split(":");
+                    if (p.length > 0 && p[0].equals(user)) {
+                        exists = true;
+                    }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+                errorLabel.setText("Error reading user database");
+                valid = false;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            errorLabel.setText("Error reading user database");
-            return;
         }
 
-        if (exists) {
+        if (valid && exists) {
             errorLabel.setText("User already exists");
-            return;
+            valid = false;
         }
 
-        // Guardo la nueva línea
-        try (BufferedWriter writer = Files.newBufferedWriter(EXTERNAL_USERS,
-                StandardCharsets.UTF_8,
-                StandardOpenOption.APPEND)) {
-            writer.write(user + ":" + pass);
-            writer.newLine();
-            errorLabel.setText("User registered successfully!");
-            usernameField.clear();
-            passwordField.clear();
-            confirmPasswordField.clear();
-        } catch (IOException e) {
-            e.printStackTrace();
-            errorLabel.setText("Error saving user");
+        if (valid) {
+            try (BufferedWriter writer = Files.newBufferedWriter(EXTERNAL_USERS,
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.APPEND)) {
+                writer.write(user + ":" + pass);
+                writer.newLine();
+                errorLabel.setText("User registered successfully!");
+                usernameField.clear();
+                passwordField.clear();
+                confirmPasswordField.clear();
+            } catch (IOException e) {
+                e.printStackTrace();
+                errorLabel.setText("Error saving user");
+            }
         }
     }
 
     @FXML
     private void goBack() {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/org/example/magicdeckbuilder/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/login.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) usernameField.getScene().getWindow();
             Scene scene = new Scene(root, 1152, 768);
-            scene.getStylesheets().add(
-                    getClass().getResource("/styles/login.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/login.css").toExternalForm());
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
