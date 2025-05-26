@@ -43,7 +43,15 @@
                    -fx-border-color: gold;
                    -fx-border-width: 2;
                    -fx-border-radius: 10;" />
-
+            <Button fx:id="editButton"
+                    text="Modify"
+                    style="-fx-background-color: transparent;
+                   -fx-text-fill: white;
+                   -fx-font-size: 14px;
+                   -fx-padding: 5 15;
+                   -fx-border-color: gold;
+                   -fx-border-width: 2;
+                   -fx-border-radius: 10;" />
             <Button fx:id="deleteButton"
                     text="Delete"
                     style="-fx-background-color: transparent;

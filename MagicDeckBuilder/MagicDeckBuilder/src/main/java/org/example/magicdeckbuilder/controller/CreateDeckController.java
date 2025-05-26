@@ -1,6 +1,7 @@
 package org.example.magicdeckbuilder.controller;
 
 import java.net.URL;
+import java.nio.file.StandardOpenOption;
 import java.util.ResourceBundle;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -52,6 +53,8 @@ public class CreateDeckController implements Initializable {
     @FXML private Button clearButton;
     @FXML private TextField deckNameField;
     @FXML private Button saveButton;
+    private String editingDeckName = null;
+
 
     private User currentUser;
     private List<Card> allCards = new ArrayList<>();
@@ -101,7 +104,13 @@ public class CreateDeckController implements Initializable {
             allCards = task.getValue();
             initFilters();
             displayCards(allCards);
+
+            // Si estamos editando un mazo, vuelve a mostrar la selección ya cargada
+            if (editingDeckName != null && !selected.isEmpty()) {
+                displayCards(allCards); // Vuelve a generar el grid con contadores visibles
+            }
         });
+
         task.setOnFailed(evt -> {
             loadingIndicator.setVisible(false);
             task.getException().printStackTrace();
@@ -148,19 +157,29 @@ public class CreateDeckController implements Initializable {
         ImageView iv = createCardView(card);
         Label count = new Label();
         count.setStyle("-fx-text-fill:white;-fx-font-weight:bold;-fx-background-color:rgba(0,0,0,0.6);");
-        count.setVisible(false);
+
         AnchorPane.setBottomAnchor(count, 4.0);
         AnchorPane.setRightAnchor(count, 4.0);
-
         AnchorPane pane = new AnchorPane(iv, count);
+
+        int quantity = selected.getOrDefault(card, 0);
+        if (quantity > 0) {
+            count.setText(String.valueOf(quantity));
+            count.setVisible(true);
+            iv.setStyle("-fx-effect:dropshadow(gaussian,yellow,10,0.5,0,0);");
+        } else {
+            count.setVisible(false);
+            iv.setStyle(null);
+        }
+
         iv.setOnMouseClicked(evt -> {
             if (evt.getButton() == MouseButton.PRIMARY)
                 selected.put(card, selected.getOrDefault(card, 0) + 1);
             else if (evt.getButton() == MouseButton.SECONDARY)
-                selected.computeIfPresent(card, (k,v) -> v>1 ? v-1 : null);
+                selected.computeIfPresent(card, (k,v) -> v > 1 ? v - 1 : null);
 
             int q = selected.getOrDefault(card, 0);
-            if (q>0) {
+            if (q > 0) {
                 count.setText(String.valueOf(q));
                 count.setVisible(true);
                 iv.setStyle("-fx-effect:dropshadow(gaussian,yellow,10,0.5,0,0);");
@@ -169,8 +188,10 @@ public class CreateDeckController implements Initializable {
                 iv.setStyle(null);
             }
         });
+
         return pane;
     }
+
 
     @FXML
     private void onSaveDeck() {
@@ -179,21 +200,40 @@ public class CreateDeckController implements Initializable {
             deckNameField.setPromptText("Enter deck name");
             return;
         }
+
         var instances = selected.entrySet().stream()
                 .map(e -> new CardInstance(e.getKey(), e.getValue()))
                 .toList();
+
+        // Si estamos editando, actualizamos el mazo existente
+        if (editingDeckName != null) {
+            currentUser.getDecks().removeIf(d -> d.getName().equals(editingDeckName));
+        }
+
         Deck deck = new Deck(name, instances, "Custom");
-        // añadir al usuario en memoria
         currentUser.getDecks().add(deck);
 
         try {
             String user = currentUser.getName();
             Path dir = Paths.get("data", "users", user, "decks");
             Files.createDirectories(dir);
+
+            // Elimina el archivo antiguo si estamos editando y el nombre cambió
+            if (editingDeckName != null && !editingDeckName.equals(name)) {
+                Path oldFile = dir.resolve(editingDeckName + ".txt");
+                Files.deleteIfExists(oldFile);
+            }
+
             Path file = dir.resolve(name + ".txt");
-            try (BufferedWriter w = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
-                for (CardInstance ci : instances) {
-                    Card c = ci.getCard();
+
+            // Escribe el archivo completo desde cero
+            try (BufferedWriter w = Files.newBufferedWriter(file,
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING)) {
+
+                for (Map.Entry<Card, Integer> entry : selected.entrySet()) {
+                    Card c = entry.getKey();
                     w.write(String.join("|",
                             c.getName(),
                             String.valueOf(c.getManaCost()),
@@ -204,17 +244,22 @@ public class CreateDeckController implements Initializable {
                             c.getRarity(),
                             c.getArtist(),
                             c.getImgUrl(),
-                            String.valueOf(ci.getQuantity())
+                            String.valueOf(entry.getValue())
                     ));
                     w.newLine();
                 }
             }
-            saveButton.setText("Saved");
+
+            saveButton.setText("Saved!");
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2),
+                    e -> saveButton.setText("Save Deck")));
+            timeline.play();
         } catch (IOException e) {
             e.printStackTrace();
-            saveButton.setText("Error");
+            saveButton.setText("Error!");
         }
     }
+
 
     private Card parseLine(String line) {
         String[] tk = line.split("\\|", 9);
@@ -262,4 +307,39 @@ public class CreateDeckController implements Initializable {
             e.printStackTrace();
         }
     }
+    public void setEditingDeck(String user, String deckName) {
+        this.editingDeckName = deckName;
+        this.currentUser = SessionManager.getCurrentUser();
+
+        Path file = Paths.get("data", "users", user, "decks", deckName + ".txt");
+        selected.clear();
+
+        if (Files.exists(file)) {
+            try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split("\\|");
+                    // Reconstruye la línea sin la cantidad para parsear la carta
+                    String cardLine = String.join("|", Arrays.copyOf(parts, parts.length - 1));
+                    Card card = parseLine(cardLine);
+                    if (card != null) {
+                        int quantity = Integer.parseInt(parts[parts.length - 1]);
+                        selected.put(card, quantity);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        deckNameField.setText(deckName);
+
+        // Si las cartas ya están cargadas, actualiza la vista
+        if (!allCards.isEmpty()) {
+            displayCards(allCards);
+        } else {
+            // Si no, se mostrarán cuando se complete loadCardsAsync()
+        }
+    }
+
 }

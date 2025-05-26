@@ -1,0 +1,7 @@
+A-Circuit Mender|3|CREATURE|Insect| |neo|uncommon|Hector Ortiz|https://cards.scryfall.io/normal/front/6/a/6a93c43b-0604-47fa-ae4e-4f72d342acf9.jpg?1681158524|1|1|1|1|1
+Ambitious Assault|3|INSTANT||In the clangor and chaos of the akki attack, few even noticed the frogs on their heads.|neo|common|Wayne Reynolds|https://cards.scryfall.io/normal/front/d/0/d00d618d-abad-475b-b938-e111282ea1c3.jpg?1654567513|1|1|1|1|1
+A-Eiganjo Exemplar|1|CREATURE|Human,Samurai| |neo|common|Ernanda Souza|https://cards.scryfall.io/normal/front/e/2/e2a8f60f-7cca-4528-b153-a8804e93626e.jpg?1681158645|1|1|1|1|1
+A-Nashi, Moon Sage's Scion|3|CREATURE|Rat,Ninja| |neo|mythic|Valera Lutfullina|https://cards.scryfall.io/normal/front/a/4/a47b49c4-6adb-445b-b0f1-e0391c2f08cf.jpg?1681159147|1|1|1|1|1
+Ambitious Assault|3|INSTANT||In the clangor and chaos of the akki attack, few even noticed the frogs on their heads.|neo|common|Wayne Reynolds|https://cards.scryfall.io/normal/front/d/0/d00d618d-abad-475b-b938-e111282ea1c3.jpg?1654567513|1|1|1|1
+A-Moon-Circuit Hacker|2|CREATURE|Human,Ninja| |neo|common|Tia Masic|https://cards.scryfall.io/normal/front/3/8/38f66d0c-5d03-449f-a056-b97e2ed6a3a1.jpg?1681159092|1|1|1|1
+A-Satoru Umezawa|3|CREATURE|Human,Ninja| |neo|rare|Anna Pavleeva|https://cards.scryfall.io/normal/front/7/b/7b30c1fe-b3c0-48c7-a451-989eb3776d43.jpg?1681159297|1

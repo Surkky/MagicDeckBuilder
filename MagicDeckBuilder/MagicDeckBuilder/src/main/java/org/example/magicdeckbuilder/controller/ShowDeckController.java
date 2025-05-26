@@ -24,6 +24,8 @@ public class ShowDeckController {
     @FXML private Button selectButton;
     @FXML private ImageView backgroundImage;
     @FXML private Button deleteButton;
+    @FXML private Button editButton;
+
 
 
     private String currentUsername;
@@ -35,6 +37,7 @@ public class ShowDeckController {
         selectButton.setOnAction(event -> showDeck(deckComboBox.getValue()));
         backButton.setOnAction(event -> goBack(event));
         deleteButton.setOnAction(event -> deleteDeck(deckComboBox.getValue()));
+        editButton.setOnAction(event -> editDeck(deckComboBox.getValue()));
 
 
         System.out.println("Usuario actual en ShowDeckController: " + currentUsername);
@@ -116,5 +119,25 @@ public class ShowDeckController {
             System.out.println("No se pudo eliminar el mazo: " + deckName);
         }
     }
+    private void editDeck(String deckName) {
+        if (deckName != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/create_deck.fxml"));
+                Parent root = loader.load();
 
+                CreateDeckController controller = loader.getController();
+                controller.setEditingDeck(currentUsername, deckName); // carga el mazo a editar
+
+                Scene scene = new Scene(root, 1152, 768);
+                scene.getStylesheets().add(getClass().getResource("/styles/create_deck.css").toExternalForm());
+
+                Stage stage = (Stage) editButton.getScene().getWindow();
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
