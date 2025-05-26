@@ -11,10 +11,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.example.magicdeckbuilder.model.User;
+import org.example.magicdeckbuilder.model.SessionManager;
+
+
 
 import java.io.IOException;
 
 public class MainController {
+
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @FXML
     private AnchorPane rootPane;
@@ -29,15 +39,13 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        // Cargar imagen de fondo
+
         Image image = new Image(getClass().getResource("/images/main_background.jpg").toExternalForm());
         backgroundImage.setImage(image);
 
-        // Ajustar tamaño del fondo a la ventana
         backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
         backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
 
-        // Efecto de texto "SELECT" al pasar el ratón
         myDecksButton.setText("My Decks");
         createDeckButton.setText("Create New Deck");
         logOutButton.setText("Log Out");
@@ -77,4 +85,17 @@ public class MainController {
         stage.show();
     }
 
+    @FXML
+    private void onMyDecksClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/magicdeckbuilder/show_deck.fxml"));
+        Parent root = loader.load();
+
+        ShowDeckController controller = loader.getController();
+        controller.setCurrentUsername(SessionManager.getCurrentUser().getName());
+
+        Scene scene = new Scene(root, 1152, 768);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
 }

@@ -1,0 +1,29 @@
+.text-field, .password-field {
+    -fx-background-color: transparent;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #666666;
+    -fx-padding: 5 10;
+}
+
+.button {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, black, 2, 0, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #b8860b, #8b7500);
+    -fx-text-fill: white;
+    -fx-border-color: #d4af37;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, #d4af37, 10, 0.6, 0, 2);
+}
+

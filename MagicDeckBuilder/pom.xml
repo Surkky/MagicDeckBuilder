@@ -45,7 +45,11 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
+       <dependency>
+           <groupId>org.json</groupId>
+           <artifactId>json</artifactId>
+           <version>20230618</version> <!-- O la versión más reciente -->
+       </dependency>
    </dependencies>
 
     <build>

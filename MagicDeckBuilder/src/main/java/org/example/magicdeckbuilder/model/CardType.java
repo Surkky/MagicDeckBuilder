@@ -8,7 +8,7 @@ public enum CardType {
         if (rawType == null || rawType.isBlank()) {
             throw new IllegalArgumentException("Invalid card type: " + rawType);
         }
-        // Separa por espacios y toma la última palabra:
+
         String[] parts = rawType.trim().split("\\s+");
         String base = parts[parts.length - 1].toUpperCase();
         return CardType.valueOf(base);

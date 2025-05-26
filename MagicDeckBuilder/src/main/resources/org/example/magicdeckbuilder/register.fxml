@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.example.magicdeckbuilder.controller.RegisterController"
+           prefWidth="1152" prefHeight="768">
+
+    <ImageView fx:id="backgroundImage" fitWidth="1152" fitHeight="768" preserveRatio="false" />
+
+    <VBox fx:id="registerBox" alignment="CENTER" spacing="15" maxWidth="300">
+        <Label text="Register" style="-fx-font-size: 36px; -fx-font-family: 'Georgia'; -fx-text-fill: gold; -fx-effect: dropshadow(one-pass-box, black, 3, 0.3, 1, 1);" />
+
+        <TextField fx:id="usernameField" promptText="Username" prefWidth="200"/>
+        <PasswordField fx:id="passwordField" promptText="Password" prefWidth="200"/>
+        <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" prefWidth="200"/>
+
+        <Label fx:id="errorLabel" textFill="red" />
+
+        <Button fx:id="registerButton" text="Register" onAction="#registerUser" prefWidth="120"/>
+        <Button fx:id="backButton" text="Back to Login" onAction="#goBack" prefWidth="120"/>
+    </VBox>
+
+</StackPane>
